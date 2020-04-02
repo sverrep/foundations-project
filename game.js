@@ -3,7 +3,7 @@ var context, controller, rectangle, loop;
 context = document.querySelector("canvas").getContext("2d");
 
 context.canvas.height = window.innerHeight - 40;
-context.canvas.width = window.innerWidth - 20;
+context.canvas.width = window.innerWidth;
 height = context.canvas.height;
 width = context.canvas.width;
 
