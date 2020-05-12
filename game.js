@@ -2,7 +2,7 @@ var context, controller, loop, world;
 
 context = document.querySelector("canvas").getContext("2d");
 
-context.canvas.height = window.innerHeight - 40;
+context.canvas.height = window.innerHeight;
 context.canvas.width = window.innerWidth;
 height = context.canvas.height;
 width = context.canvas.width;
@@ -18,29 +18,30 @@ world = {
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
+        45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 41, 45, 45, 45, 45, 45,
+        45, 45, 45, 45, 45, 45, 45, 45, 39, 45, 45, 39, 45, 45, 45, 35, 36, 37, 45, 45, 45, 45, 45, 45, 45, 45,
+        45, 35, 36, 36, 36, 37, 45, 45, 45, 45, 45, 39, 39, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
         45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-        45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-        45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 34, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-        45, 45, 45, 45, 45, 45, 45, 45, 28, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-        45, 45, 45, 45, 45, 24, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45],
+        45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45],
   columns:26,
   height:height,
   width:width,
+  start:[100, 445],
   collision: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+              0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+              0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-              0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-              0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
 }
 
@@ -98,7 +99,7 @@ class Collider{
     if (object.getTop() < tile_bottom && object.getOldTop() >= tile_bottom) {
 
       object.setTop(tile_bottom);// Move the top of the object to the bottom of the tile.
-      object.velocity_y = 0;     // Stop moving in that direction.
+      object.velocity_y = 0;     // Stop moving up
       return true;               // Return true because there was a collision.
 
     } return false;              // Return false if there was no collision.
@@ -110,7 +111,7 @@ class Collider{
     if (object.getRight() > tile_left && object.getOldRight() <= tile_left) {
 
       object.setRight(tile_left - 0.01); // -0.01 is to fix a problem with rounding
-      object.velocity_x = 0;
+      object.velocity_x = 0; // stop moving left
       return true;
 
     } return false;
@@ -122,7 +123,7 @@ class Collider{
     if (object.getLeft() < tile_right && object.getOldLeft() >= tile_right) {
 
       object.setLeft(tile_right);
-      object.velocity_x = 0;
+      object.velocity_x = 0; // stop oving right
       return true;
 
     } return false;
@@ -134,7 +135,7 @@ class Collider{
     if (object.getBottom() > tile_top && object.getOldBottom() <= tile_top) {
 
       object.setBottom(tile_top - 0.01);
-      object.velocity_y = 0;
+      object.velocity_y = 0; // stop moving down
       object.jumping    = false;
       return true;
 
@@ -198,7 +199,7 @@ class Player { // creating a class for the player object
     this.animation = new Animation();
   }
 
-
+  // methods to find characters position values
   getBottom()  { 
     return this.y + this.height; 
   }
@@ -283,7 +284,7 @@ class Player { // creating a class for the player object
   
   };
 
-  var player = new Player(100, height-60);
+  var player = new Player(world.start[0], world.start[1]);
   var collider = new Collider();
   var playerdir; // saving current last direction of player
 
@@ -299,7 +300,7 @@ class Player { // creating a class for the player object
       {
         player.animation.change(tile_sheet.frame_sets[2], 10)
       }
-      player.y_velocity -= 20;
+      player.y_velocity -= 25;
       player.jumping = true;
   
     }
@@ -348,6 +349,11 @@ class Player { // creating a class for the player object
         player.jumping = false;
         player.y = height - 60;
         player.y_velocity = 0;
+        if (player.y == height-60)
+        {
+          player.x = world.start[0];
+          player.y = world.start[1];
+        }
 
   }
 
@@ -368,6 +374,7 @@ class Player { // creating a class for the player object
     render();
 
     // call update when the browser is ready to draw again
+    
     window.requestAnimationFrame(loop);
 
 
