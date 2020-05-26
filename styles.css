@@ -1,15 +1,66 @@
-h1{ 
+#title {
+
+    margin-top: 30px;
+    background: white;
+    text-align: center;
+    
+
+}
+
+div{
+
     color: black;
     font-family: 'helvetica neue', helvetica, sans-serif;
     letter-spacing: 1px;
-    text-align: left;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+}
+
+h1 { 
+
     font-size: 20px;
 }
-canvas{
+
+#text {
+
+    font-size: 16px;
+
+}
+
+#link {
+
+    border: 1px solid black;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-top: 20px;
+    display: inline-block;
+    color: black;
+
+}
+
+#link:hover{
+
+    background: black;
+    color: white;
+
+}
+
+canvas {
     background: rgb(118,146,186);
 }
 
-body{
+#game {
     margin: 0px;
 }
 
