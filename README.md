@@ -1,4 +1,6 @@
-The idea is to make a platforming game where a character manoeuvres around a created world while trying to reach the end. 
+The website is a platforming game where the goal is to reach the end of the level without falling of the platforms on the map. To move and jump use the arrow keys.
+
+To connect to the website use the ip: 35.246.245.50 
 
 
 Struggles:
