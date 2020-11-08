@@ -1,14 +1,10 @@
 export var controller = {
-
     left:false,
     right:false,
     up:false,
     keyListener:function(event) {
-  
       var key_state = (event.type == "keydown")?true:false;
-  
       switch(event.keyCode) {
-  
         case 37:// left key
           controller.left = key_state;
         break;
@@ -20,7 +16,5 @@ export var controller = {
         break;
   
       }
-  
     }
-  
   };

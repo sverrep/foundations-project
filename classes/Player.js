@@ -1,4 +1,4 @@
-import { Animation } from "/classes/Animation.js";
+import { Animation } from "./Animation.js";
 
 export class Player { // creating a class for the player object
     constructor (x, y) {
@@ -12,6 +12,7 @@ export class Player { // creating a class for the player object
       this.x_velocity = 0;
       this.y_velocity = 0;
       this.animation = new Animation();
+      this.isMovingRight = true; 
     }
   
     // methods to find characters position values
@@ -72,5 +73,4 @@ export class Player { // creating a class for the player object
     }
   }
   
-
   export default class player {};

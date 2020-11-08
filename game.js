@@ -1,26 +1,21 @@
-import { Collider } from "/classes/Collider.js";
-import { Animation } from "/classes/Animation.js";
-import { Player } from "/classes/Player.js";
-import { world } from "/variables/world.js";
-import { controller } from "/variables/controller.js"
-import { collideObject} from "/functions/colliderObject.js"
-import { render } from "/functions/render.js";
+import { Player } from "./classes/Player.js";
+import { world } from "./variables/world.js";
+import { controller } from "./variables/controller.js"
+import { colliderObject} from "./functions/colliderObject.js"
+import { render } from "./functions/render.js";
+import { canvasCreator } from "./functions/canvasCreator.js";
+import { tile_sheet } from "./variables/tile_sheet.js";
 
-export var context = document.querySelector("canvas").getContext("2d");
-context.canvas.height = window.innerHeight;
-context.canvas.width = window.innerWidth;
-export var height = context.canvas.height;
-export var width = context.canvas.width;
+export var ctx = canvasCreator();
+export var height = window.innerHeight;
+export var width = window.innerWidth;
 export var sprite_size = 16;
-
-
 export var player = new Player(world.start[0], world.start[1]);
-export var collider = new Collider();
-var playerdir; // saving current last direction of player
 
 var loop = function() {
+  colliderObject(player);
   if (controller.up && player.jumping == false) {
-    if(playerdir == "left") // if character was last moving to the left jumps left
+    if(player.isMovingRight == false) // if character was last moving to the left jumps left
     {
       player.animation.change(tile_sheet.frame_sets[4], 10)
     }
@@ -28,9 +23,8 @@ var loop = function() {
     {
       player.animation.change(tile_sheet.frame_sets[2], 10)
     }
-    player.y_velocity -= 25;
+    player.y_velocity -= 20;
     player.jumping = true;
-
   }
 
   if (controller.left) {
@@ -38,8 +32,7 @@ var loop = function() {
         player.animation.change(tile_sheet.frame_sets[3], 10); // running animation to the left
       }
       player.x_velocity -= 0.5;
-      playerdir = "left";
-  
+      player.isMovingRight = false;
     }
   
     if (controller.right) {
@@ -47,13 +40,11 @@ var loop = function() {
         player.animation.change(tile_sheet.frame_sets[1], 10); // running animation to the right
       }
       player.x_velocity += 0.5;
-      playerdir = "right";
-  
+      player.isMovingRight = true;
     }
 
-      /* If you're just standing still, change the animation to standing still. */
-    if (!controller.left && !controller.right && !player.jumping) {
-      if (playerdir == "left")
+    if (!controller.left && !controller.right && !player.jumping) { // If you're just standing still, change the animation to standing still.
+      if (player.isMovingRight == false)
       {
         player.animation.change(tile_sheet.frame_sets[5], 20);
       }
@@ -61,7 +52,6 @@ var loop = function() {
       {
         player.animation.change(tile_sheet.frame_sets[0], 20);
       }
-
     }
 
     player.y_velocity += 0.6;// gravity
@@ -69,11 +59,7 @@ var loop = function() {
     player.x_velocity *= 0.9;// friction
     player.y_velocity *= 0.9;// friction
 
-    collideObject(player);
-
-  // if player is falling below floor line
-  if (player.y > height - 64) {
-
+  if (player.y > height - 64) { // if player is falling below floor line
       player.jumping = false;
       player.y = height - 60;
       player.y_velocity = 0;
@@ -81,46 +67,25 @@ var loop = function() {
       {
         player.x = world.start[0];
         player.y = world.start[1];
+        player.isMovingRight = true;
       }
-
   }
 
-    // if player is going off the left of the screen
-    if (player.x < -60) {
-
+    if (player.x < -60) {// if player is going off the left of the screen
         player.x = width;
-
     } 
-    else if (player.x > width) {// if player goes past right boundary
-
+    else if (player.x > width) { // if player goes past right boundary
         player.x = -60;
-
   }
 
     player.animation.update();
-    
     render();
-
-    // call update when the browser is ready to draw again
     
-    window.requestAnimationFrame(loop);
-
-
+    window.requestAnimationFrame(loop); // call update when the browser is ready to draw again
 };
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
-
-export var tile_sheet = {
-  
-  frame_sets: [[0],[3,4,5],[7], [2,1,0], [3], [4]], // standing still facing right, walking right, jumping right, walking left, jumping left, standing still facing left
-  image:new Image(),
-  columns:10,
-  rows:[3,4,5],
-  tile_size:16
-
-}
-
 tile_sheet.image.addEventListener("load", function(event) {
   window.requestAnimationFrame(loop);
 });
