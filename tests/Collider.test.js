@@ -1,59 +1,77 @@
 const { Collider } = require("../classes/Collider");
 const { Player } = require("../classes/Player");
+const collider = new Collider();
 
-test("checking collidePlatformBottom method", () => {
-    const collider = new Collider();
-    const player = new Player(100, 575);
-    player.setTop(4);
-    player.setOldTop(2);
+
+test("checking collidePlatformBottom method false case", () => {
+    const player = setUpCollider(4,2, "Top");
     expect(collider.collidePlatformBottom(player,3)).toBe(false);
+})
 
-    player.setTop(1);
-    player.setOldTop(3);
+test("checking collidePlatformBottom method true case", () => {
+    const player = setUpCollider(1,3,"Top");
     expect(collider.collidePlatformBottom(player, 2)).toBe(true);
     expect(player.getTop()).toBe(2);
     expect(player.y_velocity).toBe(0);
 })
 
-test("checking collidePlatformLeft method", () => {
-    const collider = new Collider();
-    const player = new Player(100, 575);
-    player.setRight(1);
-    player.setOldRight(3);
+test("checking collidePlatformLeft method false case", () => {
+    const player = setUpCollider(1,3,"Right");
     expect(collider.collidePlatformLeft(player,2)).toBe(false);
+})
 
-    player.setRight(6);
-    player.setOldRight(5);
+test("checking collidePlatformLeft method true case", () => {
+    const player = setUpCollider(6,5,"Right");
     expect(collider.collidePlatformLeft(player, 5)).toBe(true);
     expect(player.getRight()).toBe(5);
     expect(player.x_velocity).toBe(0);
 })
 
-test("checking collidePlatformRight method", () => {
-    const collider = new Collider();
-    const player = new Player(100, 575);
-    player.setLeft(3);
-    player.setOldLeft(2);
+test("checking collidePlatformRight method false case", () => {
+    const player = setUpCollider(3,2,"Left");
     expect(collider.collidePlatformRight(player,2)).toBe(false);
+})
 
-    player.setLeft(3);
-    player.setOldLeft(4);
+test("checking collidePlatformRight method true case", () => {
+    const player = setUpCollider(3,4,"Left");
     expect(collider.collidePlatformRight(player, 4)).toBe(true);
     expect(player.getLeft()).toBe(4);
     expect(player.x_velocity).toBe(0);
 })
 
-test("checking collidePlatformTop method", () => {
-    const collider = new Collider();
-    const player = new Player(100, 575);
-    player.setBottom(3);
-    player.setOldBottom(8);
+test("checking collidePlatformTop method false case", () => {
+    const player = setUpCollider(3,8,"Bottom");
     expect(collider.collidePlatformTop(player,6)).toBe(false);
+})
 
-    player.setBottom(5);
-    player.setOldBottom(3);
+test("checking collidePlatformTop method true case", () => {
+    const player = setUpCollider(5,3,"Bottom");
     expect(collider.collidePlatformTop(player, 4)).toBe(true);
     expect(player.getBottom()).toBe((4-0.5));
     expect(player.x_velocity).toBe(0);
 })
 
+function setUpCollider(x, x_old, direction){
+    const player = new Player(100, 575);
+    if (direction == "Top")
+    {
+        player.setTop(x);
+        player.setOldTop(x_old);
+    }
+    else if (direction == "Right")
+    {
+        player.setRight(x);
+        player.setOldRight(x_old);
+    }
+    else  if (direction == "Left")
+    {
+        player.setLeft(x);
+        player.setOldLeft(x_old);
+    }
+    else if (direction == "Bottom")
+    {
+        player.setBottom(x);
+        player.setOldBottom(x_old);
+    }
+    return player;
+}
