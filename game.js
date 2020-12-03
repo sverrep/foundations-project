@@ -16,7 +16,8 @@ var loop = function() {
   player.isJumping();
   player.isMoving();
   player.update();
-  player.isMovingOutOfBounds(height, width);
+  player.isFallingOutOfBounds(height);
+  player.isMovingOutOfBounds(width);
   player.animation.update();
   render();
   window.requestAnimationFrame(loop); // call update when the browser is ready to draw again

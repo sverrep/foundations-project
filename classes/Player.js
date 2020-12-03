@@ -11,7 +11,7 @@ export class Player { // creating a class for the player object
     this.x_old = x;
     this.y = y;
     this.y_old = y;
-    this.jumping = true;
+    this.jumping = false;
     this.x_velocity = 0;
     this.y_velocity = 0;
     this.animation = new Animation();
@@ -26,7 +26,7 @@ export class Player { // creating a class for the player object
       this.isMovingRight = false;
     }
     if (controller.right) {
-      if(!this.jumping) {
+      if (!this.jumping) {
         this.animation.change(tile_sheet.frame_sets[1], 10); // running animation to the right
       }
       this.x_velocity += 0.5;
@@ -57,18 +57,16 @@ export class Player { // creating a class for the player object
       this.jumping = true;
     } 
   }
-  isMovingOutOfBounds(height, width) {
+  isFallingOutOfBounds(height) {
     if (this.y > height - 64) { // if player is falling below floor line
       this.jumping = false;
-      this.y = height - 60;
       this.y_velocity = 0;
-      if (this.y == height-60)
-      {
-        this.x = world.start[0];
-        this.y = world.start[1];
-        this.isMovingRight = true;
-      }
+      this.x = world.start[0];
+      this.y = world.start[1];
+      this.isMovingRight = true;
     }
+  }
+  isMovingOutOfBounds(width) {
     if (this.x < -60) { // if player is going off the left of the screen
       this.x = width;
     } 
