@@ -140,28 +140,29 @@ export class Player { // creating a class for the player object
     return false;
   }
   colliderObject() {
-    var bottom, left, right, top, value;
+    var bottom, left, right, top, value, sprite_size;
+    sprite_size = tile_sheet.tile_size*4;
     
-    top = Math.floor(this.getTop() / (tile_sheet.tile_size*4)); // First we test the top left corner of the player.
-    left = Math.floor(this.getLeft() / (tile_sheet.tile_size*4));
+    top = Math.floor(this.getTop() / (sprite_size)); // First we test the top left corner of the player.
+    left = Math.floor(this.getLeft() / (sprite_size));
     value = world.collision[top * world.columns + left];
-    this.collide(value, left * (tile_sheet.tile_size*4), top * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+    this.collide(value, left * (sprite_size), top * (sprite_size), sprite_size);
   
     // We redifine top from the last collision check because the player may have moved. 
-    top = Math.floor(this.getTop() / (tile_sheet.tile_size*4));
-    right = Math.floor(this.getRight() / (tile_sheet.tile_size*4));
+    top = Math.floor(this.getTop() / (sprite_size));
+    right = Math.floor(this.getRight() / (sprite_size));
     value = world.collision[top * world.columns + right];
-    this.collide(value, right * (tile_sheet.tile_size*4), top * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+    this.collide(value, right * (sprite_size), top * (sprite_size), sprite_size);
   
-    bottom = Math.floor(this.getBottom() / (tile_sheet.tile_size*4));
-    left = Math.floor(this.getLeft() / (tile_sheet.tile_size*4));
+    bottom = Math.floor(this.getBottom() / (sprite_size));
+    left = Math.floor(this.getLeft() / (sprite_size));
     value = world.collision[bottom * world.columns + left];
-    this.collide(value, left * (tile_sheet.tile_size*4), bottom * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+    this.collide(value, left * (sprite_size), bottom * (sprite_size), sprite_size);
   
-    bottom = Math.floor(this.getBottom() / (tile_sheet.tile_size*4));
-    right = Math.floor(this.getRight() / (tile_sheet.tile_size*4));
+    bottom = Math.floor(this.getBottom() / (sprite_size));
+    right = Math.floor(this.getRight() / (sprite_size));
     value = world.collision[bottom * world.columns + right];
-    this.collide(value, right * (tile_sheet.tile_size*4), bottom * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+    this.collide(value, right * (sprite_size), bottom * (sprite_size), sprite_size);
   }
   // methods to find characters position values
   getBottom()  { 
