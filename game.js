@@ -1,7 +1,6 @@
 import { Player } from "./classes/Player.js";
 import { world } from "./variables/world.js";
 import { controller } from "./variables/controller.js";
-import { colliderObject} from "./functions/colliderObject.js";
 import { render } from "./functions/render.js";
 import { canvasCreator } from "./functions/canvasCreator.js";
 import { tile_sheet } from "./variables/tile_sheet.js";
@@ -12,7 +11,7 @@ export var width = window.innerWidth;
 export var player = new Player(world.start[0], world.start[1]);
 
 var loop = function() {
-  colliderObject(player);
+  player.colliderObject();
   player.isJumping();
   player.isMoving();
   player.update();

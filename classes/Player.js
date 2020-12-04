@@ -83,6 +83,86 @@ export class Player { // creating a class for the player object
     this.x_velocity *= 0.9;// friction
     this.y_velocity *= 0.9;// friction
   }
+  collide(value, tile_x, tile_y, tile_size) {
+    switch(value) { 
+      case  1: // normal object with collision on all 4 sides
+        if (this.collidePlatformTop(tile_y)) return;
+        this.jumping = true;
+        if (this.collidePlatformRight(tile_x + tile_size)) return;
+        if (this.collidePlatformBottom(tile_y + tile_size)) return;
+        this.collidePlatformLeft(tile_x); break;
+      
+      case 2: // ladder with no collision, but with a climbing mechanic that makes the y velocity increase to counter gravity, letting the player climb upwards
+        if (controller.up) 
+        {
+          this.y_velocity -= 0.7;
+          this.jumping = true;
+        }
+        break;
+      
+      case 3: // object that has no collision on the bottom, allowing for entry by ladder
+        if (this.collidePlatformTop(tile_y)) return; 
+        if (this.collidePlatformRight(tile_x + tile_size)) return;
+        this.collidePlatformLeft(tile_x); break;
+    }
+  }
+  collidePlatformBottom(tile_bottom) {
+    if (this.getTop() < tile_bottom && this.getOldTop() >= tile_bottom) {
+      this.setTop(tile_bottom);
+      this.y_velocity = 0;     
+      return true;               
+    } 
+    return false;              
+  }
+  collidePlatformLeft(tile_left) {
+    if (this.getRight() > tile_left && this.getOldRight() <= tile_left) {
+      this.setRight(tile_left);
+      this.x_velocity = 0; 
+      return true;
+    } 
+    return false;
+  }
+  collidePlatformRight(tile_right) {
+    if (this.getLeft() < tile_right && this.getOldLeft() >= tile_right) {
+      this.setLeft(tile_right);
+      this.x_velocity = 0; 
+      return true;
+    } 
+    return false;
+  }
+  collidePlatformTop(tile_top) {
+    if (this.getBottom() > tile_top && this.getOldBottom() <= tile_top) {
+      this.setBottom(tile_top - 0.5); // 0.5 because of a rounding issue
+      this.y_velocity = 0; 
+      this.jumping = false;
+      return true;
+    } 
+    return false;
+  }
+  colliderObject() {
+    var bottom, left, right, top, value;
+    
+    top = Math.floor(this.getTop() / (tile_sheet.tile_size*4)); // First we test the top left corner of the player.
+    left = Math.floor(this.getLeft() / (tile_sheet.tile_size*4));
+    value = world.collision[top * world.columns + left];
+    this.collide(value, left * (tile_sheet.tile_size*4), top * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+  
+    // We redifine top from the last collision check because the player may have moved. 
+    top = Math.floor(this.getTop() / (tile_sheet.tile_size*4));
+    right = Math.floor(this.getRight() / (tile_sheet.tile_size*4));
+    value = world.collision[top * world.columns + right];
+    this.collide(value, right * (tile_sheet.tile_size*4), top * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+  
+    bottom = Math.floor(this.getBottom() / (tile_sheet.tile_size*4));
+    left = Math.floor(this.getLeft() / (tile_sheet.tile_size*4));
+    value = world.collision[bottom * world.columns + left];
+    this.collide(value, left * (tile_sheet.tile_size*4), bottom * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+  
+    bottom = Math.floor(this.getBottom() / (tile_sheet.tile_size*4));
+    right = Math.floor(this.getRight() / (tile_sheet.tile_size*4));
+    value = world.collision[bottom * world.columns + right];
+    this.collide(value, right * (tile_sheet.tile_size*4), bottom * (tile_sheet.tile_size*4), tile_sheet.tile_size*4);
+  }
   // methods to find characters position values
   getBottom()  { 
     return this.y + this.height; 
