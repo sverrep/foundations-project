@@ -139,7 +139,7 @@ export class Player { // creating a class for the player object
     } 
     return false;
   }
-  colliderObject() {
+  collideObject() {
     var bottom, left, right, top, value, sprite_size;
     sprite_size = tile_sheet.tile_size*4;
     

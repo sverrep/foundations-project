@@ -11,7 +11,7 @@ export var width = window.innerWidth;
 export var player = new Player(world.start[0], world.start[1]);
 
 var loop = function() {
-  player.colliderObject();
+  player.collideObject();
   player.isJumping();
   player.isMoving();
   player.update();

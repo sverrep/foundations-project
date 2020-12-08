@@ -1,5 +1,12 @@
 const { Player } = require("../classes/Player");
+const { tile_sheet } = require("../variables/tile_sheet.js");
 const { controller } = require("../variables/controller.js");
+const { Animation } = require("../classes/Animation.js");
+jest.mock("../classes/Animation.js");
+
+beforeEach(() => {
+    Animation.mockClear();
+  });
 
 test("should output player class variables", () => {
     const player = new Player(100, 575);
@@ -7,29 +14,32 @@ test("should output player class variables", () => {
     expect(player.x_old).toBe(100);
     expect(player.y).toBe(575);
     expect(player.y_old).toBe(575);
+    expect(Animation).toHaveBeenCalledTimes(1);
 });
 
 test("testing isMoving function standing still case", () => {
     const player = new Player(100, 575);
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual([0]);
-    expect(player.animation.delay).toBe(20);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledWith(tile_sheet.frame_sets[0], 20)
+    expect(mockChange).toHaveBeenCalledTimes(1);
 })
 
 test("testing isMoving function jumping case", () => {
     const player = new Player(100, 575);
     player.jumping = true;
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual(undefined);
-    expect(player.animation.delay).toBe(undefined);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledTimes(0);
 })
 
 test("testing isMoving function moving left case", () => {
     const player = new Player(100, 575);
     setUpController(false, false);
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual([2,1,0]);
-    expect(player.animation.delay).toBe(10);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledWith(tile_sheet.frame_sets[3], 10)
+    expect(mockChange).toHaveBeenCalledTimes(1);
     expect(player.x_velocity).toBe(-0.5);
     expect(player.isMovingRight).toBe(false);
 })
@@ -39,8 +49,8 @@ test("testing isMoving function moving left jumping case", () => {
     player.jumping = true;
     setUpController(false, true);
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual(undefined);
-    expect(player.animation.delay).toBe(undefined);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledTimes(0);
     expect(player.x_velocity).toBe(-0.5);
     expect(player.isMovingRight).toBe(false);
 })
@@ -49,8 +59,9 @@ test("testing isMoving function moving right case", () => {
     const player = new Player(100, 575);
     setUpController(true, false);
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual([3,4,5]);
-    expect(player.animation.delay).toBe(10);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledWith(tile_sheet.frame_sets[1], 10)
+    expect(mockChange).toHaveBeenCalledTimes(1);
     expect(player.x_velocity).toBe(0.5);
     expect(player.isMovingRight).toBe(true);
 })
@@ -60,8 +71,8 @@ test("testing isMoving function moving right jumping case", () => {
     player.jumping = true;
     setUpController(true, true);
     player.isMoving();
-    expect(player.animation.frame_set).toStrictEqual(undefined);
-    expect(player.animation.delay).toBe(undefined);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledTimes(0);
     expect(player.x_velocity).toBe(0.5);
     expect(player.isMovingRight).toBe(true);
 })
@@ -70,8 +81,9 @@ test("testing isJumping function true looking left case", () => {
     const player = new Player(100, 575);
     setUpController(false, true, player);
     player.isJumping();
-    expect(player.animation.frame_set).toStrictEqual([3]);
-    expect(player.animation.delay).toBe(10);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledWith(tile_sheet.frame_sets[4], 10)
+    expect(mockChange).toHaveBeenCalledTimes(1);
     expect(player.y_velocity).toBe(-20);
     expect(player.jumping).toBe(true);
 })
@@ -80,18 +92,19 @@ test("testing isJumping function true looking right case", () => {
     const player = new Player(100, 575);
     setUpController(true, true, player);
     player.isJumping();
-    expect(player.animation.frame_set).toStrictEqual([7]);
-    expect(player.animation.delay).toBe(10);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledWith(tile_sheet.frame_sets[2], 10)
+    expect(mockChange).toHaveBeenCalledTimes(1);
     expect(player.y_velocity).toBe(-20);
     expect(player.jumping).toBe(true);
 })
 
-test("testing isJumping function true looking right case", () => {
+test("testing isJumping function false case", () => {
     const player = new Player(100, 575);
     setUpController(true, false, player);
     player.isJumping();
-    expect(player.animation.frame_set).toStrictEqual(undefined);
-    expect(player.animation.delay).toBe(undefined);
+    const mockChange = setUpMock();
+    expect(mockChange).toHaveBeenCalledTimes(0);
     expect(player.y_velocity).toBe(0);
     expect(player.jumping).toBe(false);
 })
@@ -325,4 +338,10 @@ function setUpController(movingRight, jump, player){
     {
         controller.up = false;
     }
+}
+
+function setUpMock(){
+    const mockAnimationInstance = Animation.mock.instances[0];
+    const mockChange = mockAnimationInstance.change;
+    return mockChange;
 }
