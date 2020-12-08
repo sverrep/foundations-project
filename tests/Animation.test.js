@@ -26,13 +26,13 @@ test("check that change method does not pass if frame set is the same", () => {
     expect(animation.delay).toBe(3);
 })
 
-test("check if statement in update function", () => {
+test("check if statement in updateAnimation function", () => {
     const animation = new Animation([1,2],2);
-    animation.update();
+    animation.updateAnimation();
     expect(animation.count).toBe(1);
     expect(animation.frame_index).toBe(0);
     expect(animation.frame).toBe(0);
-    animation.update();
+    animation.updateAnimation();
     expect(animation.count).toBe(0);
     expect(animation.frame_index).toBe(1);
     expect(animation.frame).toBe(2);

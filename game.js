@@ -10,14 +10,13 @@ export var height = window.innerHeight;
 export var width = window.innerWidth;
 export var player = new Player(world.start[0], world.start[1]);
 
-var loop = function() {
+export function loop() {
   player.collideObject();
   player.isJumping();
   player.isMoving();
-  player.update();
+  player.updatePlayer();
   player.isFallingOutOfBounds(height);
   player.isMovingOutOfBounds(width);
-  player.animation.update();
   render();
   window.requestAnimationFrame(loop); // call update when the browser is ready to draw again
 };
@@ -27,4 +26,4 @@ window.addEventListener("keyup", controller.keyListener);
 tile_sheet.image.addEventListener("load", function(event) {
   window.requestAnimationFrame(loop);
 });
-tile_sheet.image.src = "assets/tilesheet.png"
+tile_sheet.image.src = "assets/tilesheet.png";

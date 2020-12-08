@@ -14,7 +14,7 @@ export class Player { // creating a class for the player object
     this.jumping = false;
     this.x_velocity = 0;
     this.y_velocity = 0;
-    this.animation = new Animation();
+    this.animation = new Animation(tile_sheet.frame_sets[0], 20);
     this.isMovingRight = true; 
   }
   isMoving() {
@@ -24,6 +24,7 @@ export class Player { // creating a class for the player object
       }
       this.x_velocity -= 0.5;
       this.isMovingRight = false;
+      return true;
     }
     if (controller.right) {
       if (!this.jumping) {
@@ -31,6 +32,7 @@ export class Player { // creating a class for the player object
       }
       this.x_velocity += 0.5;
       this.isMovingRight = true;
+      return true;
     }
     if (!controller.left && !controller.right && !this.jumping) { // If you're just standing still, change the animation to standing still.
       if (this.isMovingRight == false)
@@ -41,6 +43,7 @@ export class Player { // creating a class for the player object
       {
         this.animation.change(tile_sheet.frame_sets[0], 20);
       }
+      return false;
     }
   }
   isJumping() {
@@ -55,6 +58,7 @@ export class Player { // creating a class for the player object
       }
       this.y_velocity -= 20;
       this.jumping = true;
+      return true;
     } 
   }
   isFallingOutOfBounds(height) {
@@ -64,17 +68,20 @@ export class Player { // creating a class for the player object
       this.x = world.start[0];
       this.y = world.start[1];
       this.isMovingRight = true;
+      return true;
     }
   }
   isMovingOutOfBounds(width) {
     if (this.x < -60) { // if player is going off the left of the screen
       this.x = width;
+      return true;
     } 
     else if (this.x > width) { // if player goes past right boundary
       this.x = -60;
+      return true;
     }
   }
-  update() {
+  updatePlayer() {
     this.x_old = this.x;
     this.y_old = this.y;
     this.y_velocity += 0.6;// gravity
@@ -82,6 +89,7 @@ export class Player { // creating a class for the player object
     this.y += this.y_velocity;
     this.x_velocity *= 0.9;// friction
     this.y_velocity *= 0.9;// friction
+    this.animation.updateAnimation();
   }
   collide(value, tile_x, tile_y, tile_size) {
     switch(value) { 

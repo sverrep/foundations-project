@@ -18,7 +18,7 @@ export class Animation { // class for sprite animations
     }
   }
 
-  update(){
+  updateAnimation(){
     this.count ++; // how many cycles have passed since last update
       if (this.count >= this.delay){ // if enough cycles have passed change frame
         this.count = 0; // reset counter
